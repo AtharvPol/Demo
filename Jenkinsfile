@@ -53,7 +53,7 @@ pipeline {
 
             when {
 
-                branch 'stg'
+                branch 'stage'
             }
 
             steps {
@@ -81,7 +81,7 @@ pipeline {
 
             when {
 
-                branch 'main'
+                branch 'prod'
             }
 
             steps {
