@@ -24,84 +24,87 @@ pipeline {
         stage('Deploy to DEV') {
 
             when {
-
                 branch 'dev'
             }
 
             steps {
 
-                sh """
+                sh '''
 
                 echo "Deploying to DEV Server"
+
+                pwd
+                ls -la
 
                 scp -o StrictHostKeyChecking=no \
                 index.html ${SERVER_USER}@${DEV_SERVER}:/tmp/index.html
 
                 ssh -o StrictHostKeyChecking=no \
-                ${SERVER_USER}@${DEV_SERVER} '
+                ${SERVER_USER}@${DEV_SERVER} "
 
                 sudo cp /tmp/index.html /var/www/html/index.html
 
                 sudo systemctl restart httpd
-                '
-
-                """
+                "
+                '''
             }
         }
 
         stage('Deploy to STAGING') {
 
             when {
-
                 branch 'stage'
             }
 
             steps {
 
-                sh """
+                sh '''
 
                 echo "Deploying to STAGING Server"
+
+                pwd
+                ls -la
 
                 scp -o StrictHostKeyChecking=no \
                 index.html ${SERVER_USER}@${STG_SERVER}:/tmp/index.html
 
                 ssh -o StrictHostKeyChecking=no \
-                ${SERVER_USER}@${STG_SERVER} '
+                ${SERVER_USER}@${STG_SERVER} "
 
                 sudo cp /tmp/index.html /var/www/html/index.html
 
                 sudo systemctl restart httpd
-                '
-
-                """
+                "
+                '''
             }
         }
 
         stage('Deploy to PRODUCTION') {
 
             when {
-
                 branch 'prod'
             }
 
             steps {
 
-                sh """
+                sh '''
 
                 echo "Deploying to PRODUCTION Server"
+
+                pwd
+                ls -la
 
                 scp -o StrictHostKeyChecking=no \
                 index.html ${SERVER_USER}@${PRD_SERVER}:/tmp/index.html
 
                 ssh -o StrictHostKeyChecking=no \
-                ${SERVER_USER}@${PRD_SERVER} '
+                ${SERVER_USER}@${PRD_SERVER} "
 
                 sudo cp /tmp/index.html /var/www/html/index.html
 
                 sudo systemctl restart httpd
-                '
-
-                """
+                "
+                '''
             }
         }
     }
@@ -109,12 +112,10 @@ pipeline {
     post {
 
         success {
-
             echo "Deployment Successful"
         }
 
         failure {
-
             echo "Deployment Failed"
         }
     }
